@@ -1,0 +1,8 @@
+openai>=1.40.0
+azure-identity>=1.17.1
+azure-mgmt-storage>=21.2.0
+azure-mgmt-resource>=23.1.1
+requests>=2.32.3
+python-dotenv>=1.0.1
+reportlab
+mcp[cli]>=1.0.0
