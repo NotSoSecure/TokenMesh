@@ -147,6 +147,15 @@ If no errors appear, installation is complete.
 
 Press `Ctrl + C` to stop the server.
 
+## Access Requirements
+
+To use **TokenMesh**, your account needs read-only access:
+
+- **Reader (Azure Subscription):** View resources and RBAC  
+- **Global Reader (Entra ID):** View users, groups, and service principals  
+
+These roles ensure data visibility while keeping everything strictly read-only.
+
 ## Usage
 
 TokenMesh supports **two modes of operation**:
