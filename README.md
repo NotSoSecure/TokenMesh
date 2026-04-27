@@ -390,6 +390,7 @@ This tool is intended for authorized security assessments only.
 - TokenMesh performs read-only operations
 - Unauthorized usage is illegal
 - Authors are not responsible for misuse
+- AI has been used in the development of this tool
 
 ---
 
