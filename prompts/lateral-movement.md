@@ -64,4 +64,4 @@ Owner on another has lateral movement potential between scopes.
 
 ---
 
-[Back to SkyMesh README](../README.md)
+[Back to TokenMesh README](../README.md)
