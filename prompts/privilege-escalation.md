@@ -71,4 +71,4 @@ to get full subscription Owner access? Show me the shortest path.
 
 ---
 
-[Back to SkyMesh README](../README.md)
+[Back to TokenMesh README](../README.md)
