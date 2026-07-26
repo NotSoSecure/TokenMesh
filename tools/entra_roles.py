@@ -1,5 +1,7 @@
 import requests
+
 from azure_auth import get_graph_token
+from tools.principal_types import normalize_odata_type
 
 GRAPH = "https://graph.microsoft.com/v1.0"
 
@@ -27,8 +29,8 @@ def get_entra_roles():
             role_data.append({
                 "role": role.get("displayName"),
                 "principal_id": m.get("id"),
-                "principal_type": m.get("@odata.type"),
-                "name": m.get("displayName")
+                "principal_type": normalize_odata_type(m.get("@odata.type")),
+                "name": m.get("displayName"),
             })
 
     return {"entra_roles": role_data}

@@ -1,0 +1,28 @@
+{
+  "scenario": "Admin-consented OAuth2 permission grant for Mail.Read + Files.Read.All to a third-party service principal. Every user in the tenant has effectively pre-consented \u2014 Microsoft's canonical Illicit Consent Grant phishing pivot, at the highest possible blast radius.",
+  "mitre_id": "T1528",
+  "oauth_grants": [
+    {
+      "clientId": "sp-thirdparty-0014",
+      "resourceId": "graph-sp-obj",
+      "consentType": "AllPrincipals",
+      "principalId": null,
+      "scope": "Mail.Read Files.Read.All openid profile"
+    }
+  ],
+  "third_party_sp": {
+    "id": "sp-thirdparty-0014",
+    "appId": "app-uuid-0014",
+    "displayName": "totally-legit-mail-analytics",
+    "publisherName": "Unknown Publisher",
+    "verifiedPublisher": {},
+    "appOwnerOrganizationId": "ffffffff-1111-2222-3333-444444444444"
+  },
+  "expected_finding": {
+    "detector": "illicit_oauth_consent_grant",
+    "principal_id": "sp-thirdparty-0014",
+    "principal_type": "ServicePrincipal",
+    "mitre_technique_id": "T1528",
+    "risk": "Critical"
+  }
+}

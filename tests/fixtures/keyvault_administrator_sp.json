@@ -1,0 +1,26 @@
+{
+  "scenario": "Service principal holds Key Vault Administrator at vault scope. That is data-plane compromise \u2014 attacker reads every secret, signs with every key.",
+  "mitre_id": "T1555.006",
+  "role_assignments": [
+    {
+      "id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-secrets/providers/Microsoft.KeyVault/vaults/kv-prod/providers/Microsoft.Authorization/roleAssignments/aaa-6",
+      "name": "aaa-6",
+      "scope": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-secrets/providers/Microsoft.KeyVault/vaults/kv-prod",
+      "principal_id": "sp-kv-admin-0006",
+      "principal_type": "ServicePrincipal",
+      "role_definition_id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleDefinitions/kvadmin",
+      "role_name": "Key Vault Administrator"
+    }
+  ],
+  "graph_principals": {
+    "sp-kv-admin-0006": {
+      "name": "kv-manager-sp",
+      "principal_type": "ServicePrincipal"
+    }
+  },
+  "expected_attack_vector": {
+    "technique_id": "T1555.006",
+    "attack_name": "Vault Data-Plane Compromise",
+    "granting_role": "Key Vault Administrator"
+  }
+}

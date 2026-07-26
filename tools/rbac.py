@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional
 import requests
 
 from azure_auth import get_management_token, get_subscription_id, subscription_scope, safe_str
+from tools.principal_types import matches, normalize, validate_filter
 
 
 API_VERSION = "2022-04-01"
@@ -53,7 +54,19 @@ def _role_definition_map(scope: str) -> Dict[str, str]:
 def list_role_assignments(
     subscription_id: Optional[str] = None,
     scope: Optional[str] = None,
+    principal_type: Optional[str] = None,
 ) -> Dict[str, Any]:
+    """
+    List Azure RBAC role assignments at a scope.
+
+    Args:
+        subscription_id: Azure subscription ID.
+        scope: Optional Azure scope (e.g. /subscriptions/<id> or a resource group path).
+        principal_type: Optional filter using Microsoft's canonical ARM
+            vocabulary — 'User', 'ServicePrincipal', or 'Group'. Omit for all.
+    """
+    filter_type = validate_filter(principal_type)
+
     sub_id = get_subscription_id(subscription_id)
     scope_path = scope or subscription_scope(sub_id)
 
@@ -70,8 +83,11 @@ def list_role_assignments(
         props = ra.get("properties") or {}
         role_def_id = safe_str(props.get("roleDefinitionId"))
         principal_id = safe_str(props.get("principalId"))
-        principal_type = safe_str(props.get("principalType"))
+        arm_principal_type = normalize(safe_str(props.get("principalType")))
         assignment_scope = safe_str(props.get("scope"))
+
+        if not matches(arm_principal_type, filter_type):
+            continue
 
         role_name = None
         if role_def_id:
@@ -83,7 +99,7 @@ def list_role_assignments(
                 "name": safe_str(ra.get("name")),
                 "scope": assignment_scope,
                 "principal_id": principal_id,
-                "principal_type": principal_type,
+                "principal_type": arm_principal_type,
                 "role_definition_id": role_def_id,
                 "role_name": role_name,
             }
@@ -91,31 +107,53 @@ def list_role_assignments(
 
     return {
         "count": len(items),
+        "principal_type_filter": filter_type,
         "items": items,
     }
 
 
-def summarize_high_privilege_assignments(subscription_id: Optional[str] = None) -> Dict[str, Any]:
-    data = list_role_assignments(subscription_id=subscription_id)
+def summarize_high_privilege_assignments(
+    subscription_id: Optional[str] = None,
+    principal_type: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Summarize high-privilege Azure RBAC roles (Owner, Contributor, User Access Administrator).
+
+    Args:
+        subscription_id: Azure subscription ID.
+        principal_type: Optional filter using Microsoft's canonical ARM
+            vocabulary — 'User', 'ServicePrincipal', or 'Group'. Omit for all.
+    """
+    filter_type = validate_filter(principal_type)
+
+    data = list_role_assignments(subscription_id=subscription_id, principal_type=filter_type)
     high_priv_roles = {"Owner", "Contributor", "User Access Administrator"}
 
     findings = [item for item in data["items"] if item.get("role_name") in high_priv_roles]
 
     by_role: Dict[str, int] = {}
+    by_type: Dict[str, int] = {}
     for item in findings:
         role = item.get("role_name") or "Unknown"
         by_role[role] = by_role.get(role, 0) + 1
+        ptype = item.get("principal_type") or "Unknown"
+        by_type[ptype] = by_type.get(ptype, 0) + 1
 
     return {
         "total_assignments": data["count"],
         "high_privilege_count": len(findings),
+        "principal_type_filter": filter_type,
         "by_role": by_role,
+        "by_principal_type": by_type,
         "findings": findings,
     }
 
 
-def list_subscription_scoped_assignments(subscription_id: Optional[str] = None) -> Dict[str, Any]:
+def list_subscription_scoped_assignments(
+    subscription_id: Optional[str] = None,
+    principal_type: Optional[str] = None,
+) -> Dict[str, Any]:
     """
     Alias-style helper for a quick read-only snapshot.
     """
-    return list_role_assignments(subscription_id=subscription_id)
+    return list_role_assignments(subscription_id=subscription_id, principal_type=principal_type)

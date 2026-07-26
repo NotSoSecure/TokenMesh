@@ -1,0 +1,38 @@
+{
+  "scenario": "Entra guest user (userType = Guest) holds Contributor at subscription scope. Partner-tenant compromise becomes your subscription compromise.",
+  "mitre_id": "T1078.004",
+  "role_assignments": [
+    {
+      "id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleAssignments/aaa-4",
+      "name": "aaa-4",
+      "scope": "/subscriptions/11111111-2222-3333-4444-555555555555",
+      "principal_id": "guest-user-0004",
+      "principal_type": "User",
+      "role_definition_id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleDefinitions/contributor",
+      "role_name": "Contributor"
+    }
+  ],
+  "graph_principals": {
+    "guest-user-0004": {
+      "name": "External Partner",
+      "principal_type": "User",
+      "upn": "partner_extern.com#EXT#@tenant.onmicrosoft.com"
+    }
+  },
+  "users": [
+    {
+      "id": "guest-user-0004",
+      "displayName": "External Partner",
+      "userPrincipalName": "partner_extern.com#EXT#@tenant.onmicrosoft.com",
+      "userType": "Guest",
+      "accountEnabled": true
+    }
+  ],
+  "expected_finding": {
+    "detector": "guest_user_with_azure_role",
+    "principal_id": "guest-user-0004",
+    "principal_type": "User",
+    "mitre_technique_id": "T1078.004",
+    "risk": "High"
+  }
+}

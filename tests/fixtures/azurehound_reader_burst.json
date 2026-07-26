@@ -1,0 +1,26 @@
+{
+  "scenario": "Service principal holds Reader at subscription scope \u2014 the baseline that both AzureHound and ROADtools require to enumerate the tenant. Reader is not privileged in isolation, but paired with another attack it unlocks the discovery pre-req. The Reader role should still map to the T1580 discovery vector.",
+  "mitre_id": "T1580",
+  "role_assignments": [
+    {
+      "id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleAssignments/aaa-11",
+      "name": "aaa-11",
+      "scope": "/subscriptions/11111111-2222-3333-4444-555555555555",
+      "principal_id": "sp-recon-0011",
+      "principal_type": "ServicePrincipal",
+      "role_definition_id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleDefinitions/reader",
+      "role_name": "Reader"
+    }
+  ],
+  "graph_principals": {
+    "sp-recon-0011": {
+      "name": "recon-tool-sp",
+      "principal_type": "ServicePrincipal"
+    }
+  },
+  "expected_attack_vector": {
+    "technique_id": "T1580",
+    "attack_name": "Cloud Infrastructure Discovery",
+    "granting_role": "Reader"
+  }
+}

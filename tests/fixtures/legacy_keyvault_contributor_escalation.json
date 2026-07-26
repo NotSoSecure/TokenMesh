@@ -1,0 +1,30 @@
+{
+  "scenario": "Service principal holds Key Vault Contributor on a vault with enableRbacAuthorization=false. That combo is a self-service data-plane escalation: KV Contributor can rewrite accessPolicies to grant itself Read on every secret.",
+  "mitre_id": "T1098.003",
+  "role_assignments": [
+    {
+      "id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-secrets/providers/Microsoft.KeyVault/vaults/kv-legacy/providers/Microsoft.Authorization/roleAssignments/aaa-8",
+      "name": "aaa-8",
+      "scope": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-secrets/providers/Microsoft.KeyVault/vaults/kv-legacy",
+      "principal_id": "sp-kv-contrib-0008",
+      "principal_type": "ServicePrincipal",
+      "role_definition_id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleDefinitions/kvcontrib",
+      "role_name": "Key Vault Contributor"
+    }
+  ],
+  "key_vaults": [
+    {
+      "name": "kv-legacy",
+      "resource_id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-secrets/providers/Microsoft.KeyVault/vaults/kv-legacy",
+      "enable_rbac_authorization": false,
+      "access_policies": []
+    }
+  ],
+  "expected_finding": {
+    "detector": "legacy_keyvault_contributor_escalation",
+    "principal_id": "sp-kv-contrib-0008",
+    "principal_type": "ServicePrincipal",
+    "mitre_technique_id": "T1098.003",
+    "risk": "Critical"
+  }
+}

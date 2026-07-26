@@ -1,0 +1,18 @@
+{
+  "scenario": "Web App has Kudu SCM basic auth enabled \u2014 the MicroBurst web-shell primitive. Attacker obtains publishing credentials from the publishing profile, then either uses /api/zipdeploy to push code or /api/command to spawn a container shell.",
+  "mitre_id": "T1505.003",
+  "web_app": {
+    "name": "prod-webapp-0015",
+    "resource_group": "rg-prod-web",
+    "resource_id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-prod-web/providers/Microsoft.Web/sites/prod-webapp-0015",
+    "default_host_name": "prod-webapp-0015.azurewebsites.net",
+    "scm_basic_auth_enabled": true,
+    "ftp_basic_auth_enabled": false
+  },
+  "expected_finding": {
+    "detector": "appservice_scm_basic_auth_enabled",
+    "display_name": "prod-webapp-0015",
+    "mitre_technique_id": "T1505.003",
+    "risk": "High"
+  }
+}

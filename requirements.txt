@@ -1,8 +1,22 @@
+# ---------- Runtime ----------
 openai>=1.40.0
 azure-identity>=1.17.1
 azure-mgmt-storage>=21.2.0
 azure-mgmt-resource>=23.1.1
+azure-mgmt-keyvault>=10.3.0
+azure-mgmt-compute>=30.6.0
+azure-mgmt-network>=25.4.0
+azure-mgmt-authorization>=4.0.0
+azure-mgmt-web>=7.2.0
+azure-keyvault-keys>=4.9.0
+azure-keyvault-secrets>=4.8.0
+azure-keyvault-certificates>=4.8.0
 requests>=2.32.3
 python-dotenv>=1.0.1
 reportlab
 mcp[cli]>=1.0.0
+
+# ---------- Testing (safe to install; adds ~10 MB) ----------
+pytest>=8.0.0
+pytest-mock>=3.12.0
+responses>=0.25.0

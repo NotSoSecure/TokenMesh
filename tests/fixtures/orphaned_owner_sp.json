@@ -1,0 +1,23 @@
+{
+  "scenario": "Owner-role assignment whose principalId does not resolve in Microsoft Graph. The service principal was deleted but the RBAC assignment was left in place \u2014 the classic Azure backdoor pattern where re-creating the app with the same object ID reinstates access.",
+  "mitre_id": "T1078.004",
+  "role_assignments": [
+    {
+      "id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleAssignments/aaa-1",
+      "name": "aaa-1",
+      "scope": "/subscriptions/11111111-2222-3333-4444-555555555555",
+      "principal_id": "deleted-sp-object-id-0001",
+      "principal_type": "ServicePrincipal",
+      "role_definition_id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleDefinitions/owner",
+      "role_name": "Owner"
+    }
+  ],
+  "graph_principals": {},
+  "expected_finding": {
+    "detector": "orphaned_role_assignment",
+    "principal_id": "deleted-sp-object-id-0001",
+    "principal_type": "ServicePrincipal",
+    "mitre_technique_id": "T1078.004",
+    "risk": "High"
+  }
+}

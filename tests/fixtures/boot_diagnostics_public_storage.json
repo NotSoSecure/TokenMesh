@@ -1,0 +1,27 @@
+{
+  "scenario": "VM writes boot diagnostics to a storage account whose allowBlobPublicAccess is true. Serial-console screenshots (potentially containing login prompts, kernel panics, sensitive process output) are anonymously readable.",
+  "mitre_id": "T1580",
+  "virtual_machines": [
+    {
+      "name": "test-vm",
+      "resource_group": "rg-test",
+      "resource_id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-test/providers/Microsoft.Compute/virtualMachines/test-vm",
+      "boot_diagnostics": {
+        "enabled": true,
+        "storage_uri": "https://publicdiagstorage.blob.core.windows.net/"
+      }
+    }
+  ],
+  "storage_accounts": [
+    {
+      "name": "publicdiagstorage",
+      "allow_blob_public_access": "true"
+    }
+  ],
+  "expected_finding": {
+    "detector": "public_boot_diagnostics_storage",
+    "display_name": "test-vm",
+    "mitre_technique_id": "T1580",
+    "risk": "High"
+  }
+}

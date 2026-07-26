@@ -1,0 +1,35 @@
+{
+  "scenario": "VM has a system-assigned managed identity that holds Owner at subscription scope. Any code execution on the VM (runCommand, IMDS token theft, malicious extension) results in subscription takeover.",
+  "mitre_id": "T1552.005 -> T1098.003",
+  "role_assignments": [
+    {
+      "id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleAssignments/aaa-5",
+      "name": "aaa-5",
+      "scope": "/subscriptions/11111111-2222-3333-4444-555555555555",
+      "principal_id": "mi-principal-0005",
+      "principal_type": "ServicePrincipal",
+      "role_definition_id": "/subscriptions/11111111-2222-3333-4444-555555555555/providers/Microsoft.Authorization/roleDefinitions/owner",
+      "role_name": "Owner"
+    }
+  ],
+  "virtual_machines": [
+    {
+      "name": "web-prod-01",
+      "resource_group": "rg-web-prod",
+      "location": "eastus",
+      "resource_id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-web-prod/providers/Microsoft.Compute/virtualMachines/web-prod-01",
+      "identity": {
+        "type": "SystemAssigned",
+        "system_assigned_principal_id": "mi-principal-0005",
+        "user_assigned_identities": []
+      }
+    }
+  ],
+  "expected_finding": {
+    "detector": "managed_identity_escalation",
+    "principal_id": "mi-principal-0005",
+    "principal_type": "ServicePrincipal",
+    "mitre_technique_id": "T1552.005 -> T1098.003",
+    "risk": "Critical"
+  }
+}

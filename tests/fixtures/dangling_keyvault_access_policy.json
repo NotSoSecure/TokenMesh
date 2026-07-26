@@ -1,0 +1,38 @@
+{
+  "scenario": "Key Vault access policy references an objectId that no longer resolves in Microsoft Graph. Classic deleted-principal persistence \u2014 the entry can be replayed if the attacker recreates the object.",
+  "mitre_id": "T1078.004",
+  "key_vaults": [
+    {
+      "name": "kv-legacy",
+      "resource_id": "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg-secrets/providers/Microsoft.KeyVault/vaults/kv-legacy",
+      "tenant_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "enable_soft_delete": true,
+      "enable_purge_protection": true,
+      "enable_rbac_authorization": false,
+      "public_network_access": "Disabled",
+      "access_policies": [
+        {
+          "tenant_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+          "object_id": "deleted-object-0007",
+          "permissions_keys": [
+            "get",
+            "list"
+          ],
+          "permissions_secrets": [
+            "get",
+            "list"
+          ],
+          "permissions_certificates": []
+        }
+      ]
+    }
+  ],
+  "graph_principals": {},
+  "expected_finding": {
+    "detector": "dangling_keyvault_access_policy",
+    "principal_id": "deleted-object-0007",
+    "principal_type": "Unknown",
+    "mitre_technique_id": "T1078.004",
+    "risk": "High"
+  }
+}

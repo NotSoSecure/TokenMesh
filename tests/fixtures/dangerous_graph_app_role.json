@@ -1,0 +1,34 @@
+{
+  "scenario": "Service principal holds RoleManagement.ReadWrite.Directory on Microsoft Graph \u2014 a tenant-takeover primitive. The SP can grant itself or any other principal Global Administrator via Graph, completely bypassing PIM approval workflows.",
+  "bloodhound_edge": "AZMGGrantRole",
+  "mitre_id": "T1098.003",
+  "microsoft_graph_service_principal_object_id": "graph-sp-obj-id",
+  "app_role_map": {
+    "role-uuid-rolemgmt-rw-dir": "RoleManagement.ReadWrite.Directory"
+  },
+  "service_principals": [
+    {
+      "id": "sp-danger-0013",
+      "appId": "app-uuid-0013",
+      "displayName": "legacy-sync-sp",
+      "servicePrincipalType": "Application",
+      "appOwnerOrganizationId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+    }
+  ],
+  "app_role_assignments": {
+    "sp-danger-0013": [
+      {
+        "resourceId": "graph-sp-obj-id",
+        "appRoleId": "role-uuid-rolemgmt-rw-dir"
+      }
+    ]
+  },
+  "expected_finding": {
+    "detector": "dangerous_graph_app_role",
+    "principal_id": "sp-danger-0013",
+    "principal_type": "ServicePrincipal",
+    "mitre_technique_id": "T1098.003",
+    "risk": "Critical",
+    "bloodhound_edge": "AZMGGrantRole"
+  }
+}
