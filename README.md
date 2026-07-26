@@ -363,7 +363,6 @@ Ready-to-use prompts organized by category. Click a category to see all prompts:
 | [**Key Vault Attack Surface**](prompts/keyvault-attack-surface.md) | Soft-delete gaps, dangling access policies, legacy Contributor escalation, KV Administrator SPs, HSM sign/export, no-expiry secrets |
 | [**Compute Attack Surface**](prompts/compute-attack-surface.md) | Managed identity subscription takeover, runCommand / CustomScriptExtension persistence, Azure Arc stale registrations, boot-diag exposure |
 | [**App Service Attack Surface**](prompts/appservice-attack-surface.md) | Kudu SCM basic auth, FTP publishing, MI escalation via deployment, plaintext secrets in app settings, MicroBurst Get-AzPasswords targets |
-| [**Entra App Permissions & OAuth Consent**](prompts/entra-app-permissions.md) | Dangerous Graph app roles (AZMGGrantAppRoles), illicit OAuth consent (T1528), admin-consent hunt, Application.ReadWrite.All persistence, Policy.ReadWrite.ConditionalAccess MFA bypass |
 | [**Attack Path Analysis**](prompts/attack-path-analysis.md) | Kill chains, blast radius, shortest path to Owner, defender-disable paths |
 | [**Attack Vector Analysis**](prompts/attack-vector-analysis.md) | Per-identity blast radius, role→MITRE mapping, BloodHound-Azure / MicroBurst / Socchi coverage, KQL detection signals |
 | [**Lateral Movement & Scope Abuse**](prompts/lateral-movement.md) | Cross-scope identities, group escalation, managed identity risk, cross-tenant SPs |
