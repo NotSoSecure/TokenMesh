@@ -161,7 +161,8 @@ diagrams, findings tables). When you see `_display` in a tool result:
 
 REPORTS — generate_pdf_report captures the last analysis. If the user asks
 for a report or export, call generate_pdf_report after running the relevant
-analysis tool. Do not summarize the PDF — return the filename.
+analysis tool. PDFs land in tools/reports/ (alongside the tool code).
+Do not summarize the PDF — return the path the tool reported.
 
 Do not hallucinate MITRE IDs or KQL. Only use what the tool returned.
 """.strip()

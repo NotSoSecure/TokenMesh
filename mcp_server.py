@@ -533,6 +533,9 @@ def mcp_generate_pdf_report() -> str:
 
     Call one of the analysis tools first (e.g. mcp_get_high_privileged_identities,
     mcp_detect_backdoors, mcp_analyze_attack_vectors) so there is data to render.
+
+    The PDF is written to tools/reports/ (alongside the tool code). The
+    returned result carries the full path.
     """
     if not _last_result:
         return json.dumps({"error": "No analysis data available yet. Run an analysis tool first."})
