@@ -8,9 +8,14 @@ Detects the shape of the last analysis result and renders accordingly:
   - items (KV vaults / VMs) -> resource inventory + issues report
 
 One PDF per call. Filename encodes the timestamp.
+
+All PDFs are written to the "reports" directory that lives alongside this
+module (i.e. tools/reports/), so every report stays inside the tool's own
+folder regardless of where the process was launched from.
 """
 
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List
 
 from reportlab.lib.pagesizes import letter
@@ -23,6 +28,14 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+
+
+REPORTS_DIR = Path(__file__).resolve().parent / "reports"
+
+
+def reports_dir() -> Path:
+    """Directory every generated PDF lands in — always tools/reports/."""
+    return REPORTS_DIR
 
 
 def _styles():
@@ -217,7 +230,18 @@ def generate_pdf_report(data: Dict[str, Any]) -> Dict[str, str]:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"report_{timestamp}.pdf"
 
-    doc = SimpleDocTemplate(filename, pagesize=letter)
+    out_dir = reports_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / filename
+
+    # Two reports inside the same second would otherwise silently overwrite.
+    seq = 1
+    while path.exists():
+        seq += 1
+        filename = f"report_{timestamp}_{seq}.pdf"
+        path = out_dir / filename
+
+    doc = SimpleDocTemplate(str(path), pagesize=letter)
     styles = _styles()
 
     content: List = [Paragraph("Azure Security Assessment Report", styles["Title"]), Spacer(1, 20)]
@@ -264,4 +288,9 @@ def generate_pdf_report(data: Dict[str, Any]) -> Dict[str, str]:
         content.append(Paragraph(str(data)[:5000], styles["Mono"]))
 
     doc.build(content)
-    return {"status": "Report generated successfully", "file": filename}
+    return {
+        "status": "Report generated successfully",
+        "file": filename,
+        "directory": str(out_dir),
+        "path": str(path),
+    }
